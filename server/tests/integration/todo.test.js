@@ -48,4 +48,27 @@ describe('/todos', () => {
         });
     });
   });
+
+  describe('DELETE /', () => {
+    it('should return true for deleting created item', () => {
+      return ToDo.create({
+        subject: 'test',
+      }).then((ToDo) => {
+        return request(app)
+          .delete(rootPath+"/"+ToDo.id)
+          .expect((response) => {
+            return expect(response.body.delete).toEqual(true);
+          });
+      });
+    });
+
+    it('should return false since item does not exist', () => {
+      return request(app)
+        .delete(rootPath+"/test")
+        .expect((response) => {
+          return expect(response.body.delete).toEqual(false);
+        });
+    });
+  });
+
 });
